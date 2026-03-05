@@ -48,8 +48,9 @@ RUN mkdir /commandhistory \
 RUN echo 'export HISTFILE=/commandhistory/.zsh_history' >> /home/${USERNAME}/.zshrc \
   && chown ${USERNAME}:${USERNAME} /home/${USERNAME}/.zshrc
 
-# Workspace
-RUN mkdir -p /workspace && chown ${USERNAME}:${USERNAME} /workspace
+# Workspace and config directories
+RUN mkdir -p /workspace /home/${USERNAME}/.claude && \
+  chown -R ${USERNAME}:${USERNAME} /workspace /home/${USERNAME}/.claude
 
 ENV DEVCONTAINER=true
 ENV SHELL=/bin/zsh

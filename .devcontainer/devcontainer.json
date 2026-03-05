@@ -46,8 +46,6 @@
     "CLAUDE_CODE_VERSION": "2.1.69",
     "CODEX_VERSION": "0.106.0",
     "PNPM_VERSION": "10.30.3",
-    "MISE_VERSION": "v2024.12.20",
-    "LAZYVIM_VERSION": "v14.0.0"
   },
   "postCreateCommand": "bash .devcontainer/postCreate.sh",
   "postStartCommand": "if [ -f /usr/local/bin/init-firewall.sh ]; then sudo /usr/local/bin/init-firewall.sh; fi",
