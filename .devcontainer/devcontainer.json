@@ -1,0 +1,66 @@
+{
+  "name": "Sandbox",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "TZ": "${localEnv:TZ:Asia/Tokyo}",
+      "ZSH_IN_DOCKER_VERSION": "1.2.0"
+    }
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "features": {
+    // --- Languages (uncomment what you need) ---
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+    // "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+    // "ghcr.io/devcontainers/features/rust:1": { "profile": "minimal" },
+    // "ghcr.io/devcontainers/features/go:1": { "version": "latest" },
+    // "ghcr.io/devcontainers/features/java:1": { "version": "21" },
+    // "ghcr.io/devcontainers/features/ruby:1": { "version": "latest" },
+    // "ghcr.io/devcontainers-extra/features/elixir-asdf:1": {} // archived; use with caution
+
+    // --- Tools (uncomment what you need) ---
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+    // "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    // "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    // "ghcr.io/devcontainers/features/terraform:1": {}
+  },
+  "runArgs": [
+    "--cap-add=NET_ADMIN",
+    "--cap-add=NET_RAW"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
+  "remoteUser": "dev",
+  "mounts": [
+    "source=sandbox-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
+    "source=sandbox-claude-config-${devcontainerId},target=/home/dev/.claude,type=volume",
+    "source=sandbox-projects,target=/home/dev/projects,type=volume",
+    // SSH keys and gitconfig (uncomment if needed):
+    // "source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh-host,type=bind,readonly",
+    // "source=${localEnv:HOME}/.gitconfig,target=/home/dev/.gitconfig-host,type=bind,readonly"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/dev/.claude",
+    "POWERLEVEL9K_DISABLE_GITSTATUS": "true",
+    "CLAUDE_CODE_VERSION": "2.1.69",
+    "CODEX_VERSION": "0.106.0",
+    "PNPM_VERSION": "10.30.3"
+  },
+  "postCreateCommand": "bash .devcontainer/postCreate.sh",
+  "postStartCommand": "if [ -f /usr/local/bin/init-firewall.sh ]; then sudo /usr/local/bin/init-firewall.sh; fi",
+  "waitFor": "postStartCommand",
+  "workspaceFolder": "/workspace"
+}
